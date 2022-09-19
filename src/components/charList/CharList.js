@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// import test from '../Test/test';
-
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -34,6 +32,7 @@ const CharList  = (props) => {
 
   useEffect(() => {
     onRequest(offset, true);
+    // eslint-disable-next-line
   }, [])
 
   const onRequest = (offset, initial) => {
@@ -55,7 +54,6 @@ const CharList  = (props) => {
     setNewItemLoading(newItemLoading => false);
     setOffset(offset => offset + 9);
     setCharEnded(charEnded => ended);
-
   }
 
   function renderItems(arr) {

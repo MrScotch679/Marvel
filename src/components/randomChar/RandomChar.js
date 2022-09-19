@@ -12,6 +12,7 @@ const RandomChar = () => {
 
   useEffect(() => {
     updateChar();
+    // eslint-disable-next-line
   }, [])
 
   const {process, setProcess, getCharacter, clearError} = useMarvelService();
