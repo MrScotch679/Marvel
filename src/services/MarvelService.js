@@ -1,21 +1,34 @@
-import { useHttp } from "../hooks/http.hook";
+import { useState, useCallback } from "react";
+
+const axios = require('axios').default;
 
 const useMarvelService = () => {
-  const {loading, request, error, clearError} = useHttp();
+  const [process, setProcess] = useState('waiting');
+
+  const clearError = useCallback(() => {
+    setProcess('loading');
+  }, []);
 
   const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
   const _apiKey = 'apikey=1993ba6ffb336a484ae8d64ac5c9983a';
   const _baseOffset = 210;
 
-
   const getAllCharacters = async (offset = _baseOffset) => {
-    const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
-    return res.data.results.map(_transformChar);
+    setProcess('loading');
+    const res = await axios.get(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
+    return res.data.data.results.map(_transformChar);
   }
 
   const getCharacter = async (id) => {
-    const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
-    return _transformChar(res.data.results[0]);
+    setProcess('loading');
+    const res = await axios.get(`${_apiBase}characters/${id}?${_apiKey}`);
+    return _transformChar(res.data.data.results[0]);
+  }
+
+  const getCharacterByName = async (name) => {
+    setProcess('loading');
+    const res = await axios.get(`${_apiBase}characters?name=${name}&${_apiKey}`);
+    return _transformChar(res.data.data.results[0]);
   }
 
   const _transformChar = (char) => {
@@ -31,13 +44,15 @@ const useMarvelService = () => {
   }
 
   const getSingleComic = async (id) => {
-    const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
-    return _transformComics(res.data.results[0]);
+    setProcess('loading');
+    const res = await axios.get(`${_apiBase}comics/${id}?${_apiKey}`);
+    return _transformComics(res.data.data.results[0]);
   }
 
   const getAllComics = async (offset = _baseOffset) => {
-    const res = await request(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
-    return res.data.results.map(_transformComics);
+    setProcess('loading');
+    const res = await axios.get(`${_apiBase}comics?limit=8&offset=${offset}&${_apiKey}`);
+    return res.data.data.results.map(_transformComics);
   }
 
   const _transformComics = (comics) => {
@@ -52,7 +67,16 @@ const useMarvelService = () => {
     }
   }
 
-  return {loading, error, getAllCharacters, getCharacter, getSingleComic, getAllComics, clearError}
+  return {
+    process, 
+    setProcess, 
+    getAllCharacters, 
+    getCharacter, 
+    getCharacterByName, 
+    getSingleComic, 
+    getAllComics, 
+    clearError,
+  }
 }
 
 export default useMarvelService;
