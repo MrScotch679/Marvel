@@ -16,6 +16,7 @@ const SingleComicPage = () => {
 
   useEffect(() => {
     updateComic();
+    // eslint-disable-next-line
   }, [comicId])
 
   const updateComic = () => {
@@ -34,7 +35,6 @@ const SingleComicPage = () => {
     <>
       {setContent(process, View, comic)}
     </>
-    
   )
 }
 

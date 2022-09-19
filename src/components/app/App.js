@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -8,10 +9,15 @@ const Page404 = lazy(() => import("../pages/404"));
 const MainPage = lazy(() => import("../pages/MainPage"));
 const ComicsPage = lazy(() => import("../pages/ComicsPage"));
 const SingleComicPage = lazy(() => import("../pages/singleComicPage/SingleComicPage"));
-const SingleCharacterLayout = lazy(() => import("../pages/singleCharacterPage/SingleCharacterLayout"));
+const SingleCharacterLayout = lazy(() => import("../pages/singleCharacterPage/SingleCharacterPage"));
 
 const App = () => {
-    
+  const [foundChar, setFoundedChar] = useState({});
+
+  const onFoundChar = (char) => {
+    setFoundedChar(char);
+  };
+
   return (
     <Router>
       <div className="app">
@@ -19,8 +25,8 @@ const App = () => {
         <main>
           <Suspense fallback={<Spinner/>}>
             <Routes>
-              <Route path="/" element={<MainPage/>}/>
-              <Route path="/characters/:characterName" element={<SingleCharacterLayout/>}/>
+              <Route path="/" element={<MainPage onFoundChar={onFoundChar}/>}/>
+              <Route path="/characters/:characterName" element={<SingleCharacterLayout foundChar={foundChar} />}/>
               <Route path="/comics" element={<ComicsPage/>}/>
               <Route path="/comics/:comicId" element={<SingleComicPage/>}/>
               <Route path="*" element={<Page404/>}/>

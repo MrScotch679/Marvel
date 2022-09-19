@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage as FormikErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {Link} from 'react-router-dom';
@@ -8,29 +8,30 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charSearchForm.scss';
 
-const CharSearchForm = () => {
-  const [char, setChar] = useState(null);
-  const {loading, error, getCharacterByName, clearError} = useMarvelService();
+const CharSearchForm = (props) => {
+  const [char, setChar] = useState('');
+  const {process, setProcess, getCharacterByName, clearError} = useMarvelService();
 
   const onCharLoaded = (char) => {
     setChar(char);
-    console.log(char);
+    props.onFoundChar(char);
   }
 
   const updateChar = (name) => {
     clearError();
 
     getCharacterByName(name)
-      .then(onCharLoaded);
+      .then(onCharLoaded)
+      .then(() => setProcess('confirmed'))
+      .catch(() => setProcess('error'));
   }
 
-  const errorMessage = error ? <div className="char__search-critical-error"><ErrorMessage /></div> : null;
-  const results = !char ? null : char.length > 0 
-    ?
+  const errorMessage = process === 'error' ? <div className="char__search-critical-error"><ErrorMessage /></div> : null;
+  const results = !char ? null : 
+    char ?
     <div className="char__search-wrapper">
       <div className="char__search-success">There is! Visit {char.name} page?</div>
       <Link to={`/characters/${char.name}`} className="button button__secondary">
-      :characterName
         <div className="inner">To page</div>
       </Link>
     </div> 
@@ -43,7 +44,7 @@ const CharSearchForm = () => {
     <div className="char__search-form">
       <Formik
         initialValues = {{
-          charName: ''
+          charName: char
         }}
         validationSchema = {Yup.object({
           charName: Yup.string().required('This field is required')
@@ -63,7 +64,7 @@ const CharSearchForm = () => {
             <button 
               type='submit' 
               className="button button__main"
-              disabled={loading}>
+              disabled={process === 'loading'}>
               <div className="inner">find</div>
             </button>
           </div>
