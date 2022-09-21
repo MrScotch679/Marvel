@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 import AppHeader from "../appHeader/AppHeader";
 import Spinner from "../spinner/Spinner";
@@ -19,7 +19,7 @@ const App = () => {
   };
 
   return (
-    <Router>
+    <HashRouter basename="">
       <div className="app">
         <AppHeader/>
         <main>
@@ -34,7 +34,7 @@ const App = () => {
           </Suspense>
         </main>
       </div>
-    </Router>
+    </HashRouter>
   )
 }
 
