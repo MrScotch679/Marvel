@@ -8,13 +8,12 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charSearchForm.scss';
 
-const CharSearchForm = (props) => {
+const CharSearchForm = () => {
   const [char, setChar] = useState('');
   const {process, setProcess, getCharacterByName, clearError} = useMarvelService();
 
   const onCharLoaded = (char) => {
     setChar(char);
-    props.onFoundChar(char);
   }
 
   const updateChar = (name) => {
