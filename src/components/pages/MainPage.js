@@ -8,7 +8,7 @@ import CharSearchForm from "../charSearchForm/CharSearchForm";
 
 import decoration from '../../resources/img/vision.png';
 
-const MainPage = (props) => {
+const MainPage = () => {
 
   const [selectedChar, setChar] = useState(null);
 
@@ -32,7 +32,7 @@ const MainPage = (props) => {
             <CharInfo charId={selectedChar}/>
           </ErrorBoundary>
           <ErrorBoundary>
-            <CharSearchForm onFoundChar={props.onFoundChar}/>
+            <CharSearchForm />
           </ErrorBoundary>
         </div>
       </div>

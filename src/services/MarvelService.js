@@ -34,12 +34,12 @@ const useMarvelService = () => {
   const _transformChar = (char) => {
     return {
       name: char.name,
-      description: char.description ? `${char.description.slice(0, 210)}...` : 'We have no information about...',
+      description: char.description ? `${char.description.slice(0, 210)}...` : 'No description for this character...',
       thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
       homepage: char.urls[0].url,
       wiki: char.urls[1].url,
       id: char.id,
-      comics: char.comics.available !== 0 ? char.comics.items.slice(0, 10) : [{name: 'We have no information about...'}],
+      comics: char.comics.available !== 0 ? char.comics.items.slice(0, 10) : [{name: 'No information about comics...'}],
     }
   }
 
@@ -58,10 +58,10 @@ const useMarvelService = () => {
   const _transformComics = (comics) => {
     return {
       title: comics.title,
-      description: comics.description ? comics.description : 'We have no description information for this comic',
+      description: comics.description ? comics.description : 'No description for this comic...',
       pages: comics.pageCount + ' pages',
       shop: comics.urls.url,
-      prices: comics.prices[0].price ? comics.prices[0].price + '$' : 'We have no price information for this comic',
+      prices: comics.prices[0].price ? comics.prices[0].price + '$' : 'No price information...',
       thumbnail: comics.thumbnail.path + '.' + comics.thumbnail.extension,
       id: comics.id,
     }

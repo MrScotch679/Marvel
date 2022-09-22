@@ -1,10 +1,45 @@
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
+import useMarvelService from '../../../services/MarvelService';
+import setContent from '../../../utils/setContent';
 
 import './singleCharacterLayout.scss';
 
-const SingleCharacterPage = (props) => {
+const SingleCharacterPage = () => {
 
-  const {name, description, thumbnail} = props.foundChar;
+  const {characterName} = useParams();
+
+  const [char, setChar] = useState({});
+
+  const {process, setProcess, getCharacterByName, clearError} = useMarvelService();
+
+  useEffect(() => {
+    updateChar();
+    // eslint-disable-next-line
+  }, [characterName])
+
+  const updateChar = () => {
+    clearError();
+    getCharacterByName(characterName)
+      .then(onComicLoaded)
+      .then(() => setProcess('confirmed'))
+      .catch(() => setProcess('error'));
+  }
+
+  const onComicLoaded = (characterName) => {
+    setChar(characterName);
+  }
+
+  return (
+    <>
+      {setContent(process, View, char)}
+    </>
+  )
+}
+
+const View = ({data}) => {
+  const {thumbnail, name, description} = data;
 
   return (
     <div className="single-comic">
