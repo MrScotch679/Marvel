@@ -1,25 +1,9 @@
 import { useState, useEffect } from 'react';
 
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 
 import './charList.scss';
-
-const setContent = (process, Component, newItemLoading) => {
-  switch (process) {
-    case 'waiting':
-      return <Spinner/>;
-    case 'loading':
-      return newItemLoading ? <Component/> : <Spinner/>;
-    case 'confirmed':
-      return <Component/>;
-    case 'error': 
-      return <ErrorMessage/>;
-    default: 
-      break;
-  }
-}
 
 const CharList  = (props) => {
 
